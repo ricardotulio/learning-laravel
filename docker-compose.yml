@@ -1,0 +1,29 @@
+version: '2'
+
+services:
+  php:
+    image: php:5.6-fpm
+    volumes:
+      - ./:/usr/share/nginx/html
+
+  postgres:
+    image: postgres:9.6
+
+  redis:
+    image: redis:3.0
+
+  nginx:
+    image: nginx:1.10
+    volumes:
+      - ./:/usr/share/nginx/html
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "8080:80"
+    depends_on:
+      - php
+      - postgres
+      - redis
+
+volumes:
+  database:
+    driver: "local"
